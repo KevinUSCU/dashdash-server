@@ -6,12 +6,25 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const path = require('path')
-const cors = require('cors')
 
 const app = express()
 app.use(bodyParser.json())
 app.use(morgan('dev'))
-app.use(cors())
+
+// Set up Cors
+const cors = require('cors')
+if (environment === 'development') {
+  var corsOptions = {
+    origin: 'http://127.0.0.1:8080',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+  }  
+} else {
+  var corsOptions = {
+    origin: ['https://dashdash-frontend.herokuapp.com/', 'https://kevinuscu-personal-project-site.surge.sh'],
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+  }
+}
+app.use(cors(corsOptions))
 
 const {
   AuthRouter,
